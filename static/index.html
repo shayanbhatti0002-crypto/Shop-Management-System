@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Management Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">
+            <i class="fas fa-store"></i>
+            <h1>Shop Manager</h1>
+        </div>
+        <nav class="nav-menu">
+            <button class="nav-btn active" data-tab="dashboard">
+                <i class="fas fa-chart-line"></i>
+                <span>Dashboard</span>
+            </button>
+            <button class="nav-btn" data-tab="inventory">
+                <i class="fas fa-boxes-stacked"></i>
+                <span>Inventory</span>
+            </button>
+            <button class="nav-btn" data-tab="orders">
+                <i class="fas fa-receipt"></i>
+                <span>Orders</span>
+            </button>
+        </nav>
+        <div class="sidebar-footer">
+            <p>Powered by FastAPI</p>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard Tab -->
+        <section class="tab-content active" id="dashboard">
+            <div class="header">
+                <h2>Dashboard</h2>
+                <p>Overview of your shop performance</p>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="stat-items">0</h3>
+                        <p>Unique Items</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="stat-inventory-value">Rs 0</h3>
+                        <p>Inventory Value</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon purple">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="stat-revenue">Rs 0</h3>
+                        <p>Total Revenue</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon red">
+                        <i class="fas fa-triangle-exclamation"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="stat-low-stock">0</h3>
+                        <p>Low Stock Items</p>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Category Summary</h3>
+                    </div>
+                    <div class="card-body">
+                        <ul class="category-list" id="category-list">
+                            <!-- Categories populated here -->
+                        </ul>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Recent Orders</h3>
+                    </div>
+                    <div class="card-body">
+                        <ul class="recent-orders" id="recent-orders">
+                            <!-- Recent orders populated here -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Inventory Tab -->
+        <section class="tab-content" id="inventory">
+            <div class="header">
+                <div>
+                    <h2>Inventory</h2>
+                    <p>Manage your products</p>
+                </div>
+                <button class="btn primary" id="add-item-btn">
+                    <i class="fas fa-plus"></i>
+                    Add Item
+                </button>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="search-input" placeholder="Search by name or category...">
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Date Added</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inventory-table-body">
+                                <!-- Inventory items populated here -->
+                            </tbody>
+                        </table>
+                        <div class="empty-state" id="inventory-empty" style="display: none;">
+                            <i class="fas fa-box-open"></i>
+                            <p>No items found</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Orders Tab -->
+        <section class="tab-content" id="orders">
+            <div class="header">
+                <div>
+                    <h2>Orders</h2>
+                    <p>View and create orders</p>
+                </div>
+                <button class="btn primary" id="create-order-btn">
+                    <i class="fas fa-plus"></i>
+                    Create Order
+                </button>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Date/Time</th>
+                                    <th>Items</th>
+                                    <th>Total</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orders-table-body">
+                                <!-- Orders populated here -->
+                            </tbody>
+                        </table>
+                        <div class="empty-state" id="orders-empty" style="display: none;">
+                            <i class="fas fa-receipt"></i>
+                            <p>No orders found</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Item Modal (Add/Edit) -->
+    <div class="modal-overlay" id="item-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modal-title">Add New Item</h3>
+                <button class="close-btn" id="close-item-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="item-form">
+                    <input type="hidden" id="item-id">
+                    <div class="form-group">
+                        <label for="item-name">Item Name</label>
+                        <input type="text" id="item-name" required placeholder="e.g., Wireless Mouse">
+                    </div>
+                    <div class="form-group">
+                        <label for="item-category">Category</label>
+                        <input type="text" id="item-category" required placeholder="e.g., Electronics">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="item-price">Price (Rs)</label>
+                            <input type="number" id="item-price" step="0.01" min="0.01" required placeholder="e.g., 2500">
+                        </div>
+                        <div class="form-group">
+                            <label for="item-quantity">Quantity</label>
+                            <input type="number" id="item-quantity" min="0" required placeholder="e.g., 10">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn secondary" id="cancel-item-btn">Cancel</button>
+                <button class="btn primary" id="save-item-btn">
+                    <i class="fas fa-save"></i>
+                    Save Item
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Modal (Create) -->
+    <div class="modal-overlay" id="order-modal">
+        <div class="modal large">
+            <div class="modal-header">
+                <h3>Create New Order</h3>
+                <button class="close-btn" id="close-order-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="customer-name">Customer Name</label>
+                    <input type="text" id="customer-name" required placeholder="e.g., John Doe">
+                </div>
+                <div class="order-items-section">
+                    <div class="section-header">
+                        <h4>Order Items</h4>
+                        <button class="btn small" id="add-order-line-btn">
+                            <i class="fas fa-plus"></i>
+                            Add Item
+                        </button>
+                    </div>
+                    <div class="order-lines" id="order-lines">
+                        <!-- Order lines populated here -->
+                    </div>
+                    <div class="order-total">
+                        <h4>Total: <span id="order-total">Rs 0.00</span></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn secondary" id="cancel-order-btn">Cancel</button>
+                <button class="btn primary" id="place-order-btn">
+                    <i class="fas fa-check"></i>
+                    Place Order
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Details Modal -->
+    <div class="modal-overlay" id="order-details-modal">
+        <div class="modal large">
+            <div class="modal-header">
+                <h3 id="order-details-title">Order Details</h3>
+                <button class="close-btn" id="close-order-details-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="order-details-info">
+                    <div>
+                        <p><strong>Customer:</strong> <span id="details-customer"></span></p>
+                        <p><strong>Date:</strong> <span id="details-date"></span></p>
+                    </div>
+                    <div>
+                        <p><strong>Order ID:</strong> <span id="details-id"></span></p>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Unit Price</th>
+                                <th>Quantity</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody id="order-details-lines">
+                            <!-- Lines populated here -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="order-total">
+                    <h4>Total: <span id="details-total">Rs 0.00</span></h4>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn secondary" id="close-order-details-btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="toast-icon"></i>
+        <span class="toast-message"></span>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
