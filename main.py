@@ -11,6 +11,8 @@ import csv
 import os
 import sys
 import logging
+import subprocess
+import platform
 from datetime import datetime
 from dataclasses import dataclass, asdict, field
 from typing import List, Optional, Dict
@@ -350,7 +352,8 @@ class OrderManager:
 # ─── UI Helpers ──────────────────────────────────────────────────────────────
 
 def clear():
-    os.system("cls" if os.name == "nt" else "clear")
+    command = 'cls' if platform.system() == 'Windows' else 'clear'
+    subprocess.call(command, shell=True)
 
 def pause():
     input(c("\n  Press Enter to continue...", Color.CYAN))
